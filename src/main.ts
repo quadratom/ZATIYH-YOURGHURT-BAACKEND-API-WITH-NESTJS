@@ -6,8 +6,8 @@ import * as dotenv from "dotenv"
 
 
 async function bootstrap() {
-  dotenv.config(); 
-  
+  dotenv.config();
+
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
@@ -19,6 +19,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3001);
+  await app.listen(process.env.PORT || 3001);
 }
 bootstrap();
