@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateZohoDto } from './dto/create-zoho.dto';
-import { UpdateZohoDto } from './dto/update-zoho.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-
 
 @Injectable()
 export class ZohoService {

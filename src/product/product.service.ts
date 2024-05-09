@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import axios from 'axios';
+import { ZohoService } from 'src/zoho/zoho.service';
 
 @Injectable()
 export class ProductService {
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
-  }
+  constructor(private readonly zohoService: ZohoService) {}
 
-  findAll() {
-    return `This action returns all product`;
-  }
+  async findAll() {
+    try {
+      // Refresh token to get the latest access token
+      const { access_token } = await this.zohoService.refreshToken();
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
-  }
+      // Make request using Axios
+      const response = await axios.get(
+        'https://www.zohoapis.com/inventory/v1/items',
+        {
+          params: {
+            organization_id: '839114643',
+          },
+          headers: {
+            Authorization: `Zoho-oauthtoken ${access_token}`,
+          },
+        },
+      );
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw error; 
+    }
   }
 }

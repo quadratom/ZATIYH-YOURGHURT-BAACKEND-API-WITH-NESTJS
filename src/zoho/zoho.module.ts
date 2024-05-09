@@ -7,5 +7,6 @@ import { ConfigModule } from '@nestjs/config';
   imports: [ConfigModule.forRoot()],
   controllers: [ZohoController],
   providers: [ZohoService],
+  exports: [ZohoService],
 })
 export class ZohoModule {}
