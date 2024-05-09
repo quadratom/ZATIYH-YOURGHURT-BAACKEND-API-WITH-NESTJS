@@ -5,7 +5,7 @@ import { UpdateZohoDto } from './dto/update-zoho.dto';
 
 @Controller('zoho')
 export class ZohoController {
-  constructor(private readonly zohoService: ZohoService) {}
+  constructor(private readonly zohoService: ZohoService) { }
 
   @Post()
   create(@Body() createZohoDto: CreateZohoDto) {
@@ -17,9 +17,9 @@ export class ZohoController {
     return this.zohoService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.zohoService.findOne(+id);
+  @Get('access-token')
+  findOne() {
+    return this.zohoService.findOne();
   }
 
   @Patch(':id')
