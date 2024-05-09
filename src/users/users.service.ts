@@ -9,9 +9,9 @@ import { Users } from './user.model'
 export class UsersService {
   constructor(@InjectModel('users') private readonly userModel: Model<Users>) { }
 
-   create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto) {
     const user = new this.userModel(createUserDto)
-    return  user.save();
+    return user.save();
   }
 
   findAll() {
@@ -26,7 +26,7 @@ export class UsersService {
     return this.userModel.updateOne({ _id: id }, updateUserDto);
   }
 
-  remove(id: string) {
-    return this.userModel.deleteOne({ _id: id });
-  }
+  // remove(id: string) {
+  //   return this.userModel.deleteOne({ _id: id });
+  // }
 }
