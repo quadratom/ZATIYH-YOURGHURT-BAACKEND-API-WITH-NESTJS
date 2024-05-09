@@ -8,26 +8,11 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class ZohoService {
   constructor(private readonly configService: ConfigService) {}
-  create(createZohoDto: CreateZohoDto) {
-    return 'This action adds a new zoho';
-  }
-
-  findAll() {
-    return `This action returns all zoho`;
-  }
 
   async findOne() {
     const access_token = await this.refreshToken();
     console.log({ access_token });
     return access_token;
-  }
-
-  update(id: number, updateZohoDto: UpdateZohoDto) {
-    return `This action updates a #${id} zoho`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} zoho`;
   }
 
   async refreshToken() {
