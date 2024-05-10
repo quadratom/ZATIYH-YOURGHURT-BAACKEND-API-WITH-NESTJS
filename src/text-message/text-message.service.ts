@@ -34,7 +34,6 @@ export class TextMessageService {
       'Content-Type': 'application/json',
     };
 
-    console.log('here')
     try {
       const response = await axios.post('https://api.ng.termii.com/api/sms/send', data, { headers });
       console.log(response, 'ok');
