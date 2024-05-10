@@ -7,13 +7,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles, User, UserDocument } from 'schema/user.schema';
 import { generateOTP, validateEmail } from 'src/utils';
 import { throwBadRequest } from 'src/utils/exceptions';
+import { TextMessageService } from 'src/text-message/text-message.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('User')
     private userModel: Model<UserDocument>,
-  ) {}
+    private textMessageService: TextMessageService,
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const otp = generateOTP();
@@ -34,6 +36,10 @@ export class UsersService {
       return throwBadRequest('Phonenumber already exist');
     }
 
+    await this.textMessageService.sendSmsWithSendChamp({
+      message: `Hi ${createUserDto.firstName}, Your One-Time Password (OTP) for verification is ${otp}. Please enter this code to proceed. Do not share this OTP with anyone. Thank you.`,
+      receiver: createUserDto.phoneNumber
+    })
 
     const newUser = await this.userModel.create({
       ...createUserDto,

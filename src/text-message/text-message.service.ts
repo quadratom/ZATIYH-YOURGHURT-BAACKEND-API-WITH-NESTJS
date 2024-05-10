@@ -1,26 +1,87 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { CreateTextMessageDto } from './dto/create-text-message.dto';
-import { UpdateTextMessageDto } from './dto/update-text-message.dto';
+import axios from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TextMessageService {
-  create(createTextMessageDto: CreateTextMessageDto) {
-    return 'This action adds a new textMessage';
+  constructor(private readonly configService: ConfigService) { }
+
+
+  async sendSmsWithTermii({
+    message,
+    receiver,
+  }): Promise<any> {
+    let to: string;
+
+    if (receiver.startsWith("0")) {
+      to = "234" + receiver.substring(1);
+    } else {
+      to = receiver
+    }
+
+    console.log({ to, key: this.configService.get<string>('TERMII_API_KEY') })
+    const data = {
+      to,
+      from: 'zayith',
+      sms: message,
+      type: 'plain',
+      api_key: this.configService.get<string>('TERMII_API_KEY'),
+      channel: 'dnd',
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    console.log('here')
+    try {
+      const response = await axios.post('https://api.ng.termii.com/api/sms/send', data, { headers });
+      console.log(response, 'ok');
+      return response.data;
+    } catch (error) {
+      console.log({ error })
+      throw new Error(error.message);
+    }
   }
 
-  findAll() {
-    return `This action returns all textMessage`;
+
+  async sendSmsWithSendChamp({
+    message,
+    receiver,
+  }): Promise<any> {
+
+    let to: string;
+
+    if (receiver.startsWith("0")) {
+      to = "+234" + receiver.substring(1);
+    } else {
+      to = receiver
+    }
+
+
+    const data = {
+      to,
+      message,
+      sender_name: 'Sendchamp',
+      route: 'dnd',
+    };
+
+    const headers = {
+      'Accept': 'application/json,text/plain,*/*',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer sendchamp_live_$2a$10$P04e7AiNDb1fZ3qDStTiz.nQWB64D007kL9yqR33P6Ce4NdNCJ.JW',
+    };
+
+    try {
+      const response = await axios.post('https://api.sendchamp.com/api/v1/sms/send', data, { headers });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log({ 'error': error })
+      throw new Error(error.message);
+    }
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} textMessage`;
-  }
-
-  update(id: number, updateTextMessageDto: UpdateTextMessageDto) {
-    return `This action updates a #${id} textMessage`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} textMessage`;
-  }
 }
