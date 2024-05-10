@@ -4,11 +4,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { dbConfig } from './config';
+import { ZohoService } from './zoho/zoho.service';
 
 @Module({
-  imports: [UsersModule, MongooseModule.forRoot(dbConfig.db)],
+  imports: [ UsersModule, MongooseModule.forRoot(dbConfig.db)],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ZohoService],
 })
 export class AppModule {}
 
