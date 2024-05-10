@@ -4,12 +4,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { dbConfig } from './config';
-import { ZohoService } from './zoho/zoho.service';
+import { ZohoModule } from './zoho/zoho.module';
+import { ConfigModule } from '@nestjs/config';
+import { ProductModule } from './product/product.module';
+import { TextMessageModule } from './text-message/text-message.module';
+
 
 @Module({
-  imports: [ UsersModule, MongooseModule.forRoot(dbConfig.db)],
+  imports: [UsersModule, MongooseModule.forRoot(dbConfig.db), ZohoModule, ConfigModule.forRoot(), ProductModule, TextMessageModule],
   controllers: [AppController],
-  providers: [AppService, ZohoService],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
 
