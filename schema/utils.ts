@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { User } from './user.schema';
 
 export type ScreenedUserType = Omit<User, 'passwords' | 'tokens' | '__v'>;

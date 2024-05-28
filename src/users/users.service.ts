@@ -9,7 +9,7 @@ import { generateOTP, validateEmail } from 'src/utils';
 import { throwBadRequest, throwGatewayError, throwNotFoundError } from 'src/utils/exceptions';
 import { TextMessageService } from 'src/text-message/text-message.service';
 import { VerifyUserDto } from './dto/verify-user.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { saltOrRounds } from 'src/utils/config';
 
 @Injectable()  
